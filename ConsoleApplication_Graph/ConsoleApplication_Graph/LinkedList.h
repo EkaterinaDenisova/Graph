@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <stdexcept> // для исключений
 #include "AbsIterator.h"
 // класс узла списка
 template <typename T>
@@ -44,14 +45,18 @@ public:
     // добавление узла в конец списка
     void addNode(const T& data);
     // Удаление узла по значению
-    void removeNode(T& data);
+    void removeNode(const T& data);
     // поиск узла по значению
     // true если узел найден, иначе false
     bool searchNode(T& data);
     // поиск индекса узла, если не найден, то -1
     int searchNodeInd(const T& data);
+    // значение узла по индексу
+    T& dataByInd(int ind);
     // вывод списка в консоль
     void printList();
+    // количеств узлов в списке
+    int ListSize();
 
 
     // класс итератора для Linked List
@@ -128,7 +133,7 @@ void LinkedList<T>::addNode(const T& data) {
 
 // Удаление узла по значению
 template<typename T>
-void LinkedList<T>::removeNode(T& data) {
+void LinkedList<T>::removeNode(const T& data) {
     // если список не пустой
     if (head != nullptr) {
 
@@ -189,6 +194,33 @@ int LinkedList<T>::searchNodeInd(const T& data) {
     return -1;
 }
 
+// значение узла по индексу
+template<typename T>
+T& LinkedList<T>::dataByInd(int ind) {
+    if (ind < 0) {
+        throw std::invalid_argument("Недопустимое значение индекса");
+    }
+    else {
+        int i = 0;
+        //T res;
+
+        Node<T>* current = head;
+
+        while (i < ind) {
+            if (current == nullptr || current->next == nullptr) {
+                throw std::invalid_argument("Недопустимое значение индекса");
+            }
+            else {
+                current = current->next;
+                i++;
+            }
+        }
+
+        return current->data;
+
+    }
+}
+
 // вывод списка в консоль
 template<typename T>
 void LinkedList<T>::printList() {
@@ -198,6 +230,18 @@ void LinkedList<T>::printList() {
         current = current->next;
     }
     std::cout << std::endl;
+}
+
+template<typename T>
+int LinkedList<T>::ListSize() {
+    int res = 0;
+    Node<T>* current = head;
+    while (current != nullptr) {
+        res++;
+        //std::cout << current->data << " ";
+        current = current->next;
+    }
+    return res;
 }
 
 
