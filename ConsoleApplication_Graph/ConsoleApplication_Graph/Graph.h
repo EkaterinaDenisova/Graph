@@ -87,6 +87,9 @@ public:
 
 	// геттер максимального количества вершин
 	int GetMaxSize() const;
+
+	// получение списка вершин
+	vector<T> GetVertexList();
 };
 
 // конструктор, обнуляет матрицу смежности и переменную graphsize
@@ -168,6 +171,12 @@ int Graph<T>::NumberOfEdges() const {
 template <typename T>
 int Graph<T>::GetMaxSize() const {
 	return maxGraphSize;
+}
+
+// получение списка вершин
+template <typename T>
+vector<T> Graph<T>::GetVertexList() {
+	return vertexList.ListToVec();
 }
 
 

@@ -57,6 +57,7 @@ public:
     void printList();
     // количеств узлов в списке
     int ListSize();
+    std::vector<T> ListToVec();
 
 
     // класс итератора для Linked List
@@ -242,6 +243,19 @@ int LinkedList<T>::ListSize() {
         current = current->next;
     }
     return res;
+}
+
+template<typename T>
+std::vector<T> LinkedList<T>::ListToVec() {
+    std::vector<T> t;
+    Node<T>* current = this->head;
+    while (current != nullptr) {
+        t.push_back(current->data);
+        
+        current = current->next;
+    }
+    return t;
+
 }
 
 
