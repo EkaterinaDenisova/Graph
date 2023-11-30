@@ -44,7 +44,7 @@ public:
 	int NumberOfVertices() const;
 
 	// количество рёбер
-	//int NumberOfEdges() const;
+	int NumberOfEdges() const;
 
 	// получение веса ребра
 	int GetWeight(const T& vertex1, const T& vertex2);
@@ -77,6 +77,10 @@ public:
 
 	// обход в ширину
 	vector<T> BreadthFirstSearch(const T& beginVertex);
+
+	// алгоритм Беллмана-Форда
+	// возвращает вектор из кратчайших путей до каждой вершины
+	vector<T> Bellman_Ford(const T& beginVertex);
 
 	// итератор для обхода вершин
 	//friend class VertexIterator<T>;
@@ -145,6 +149,19 @@ bool Graph<T>::GraphEmpty() const {
 template <typename T>
 int  Graph<T>::NumberOfVertices() const {
 	return graphsize;
+}
+
+// количество рёбер
+template <typename T>
+int Graph<T>::NumberOfEdges() const {
+	int res = 0;
+	for (int i = 0; i < graphsize; i++) {
+		for (int j = 0; j < graphsize; j++) {
+			if (edge[i][j] != 0)
+				res++;
+		}
+	}
+	return res;
 }
 
 // максмальное количество вершин
@@ -465,4 +482,31 @@ vector<T> Graph<T>::BreadthFirstSearch(const T& beginVertex) {
 	}
 	// возвратить выходной список
 	return l;
+}
+
+// алгоритм Беллмана-Форда
+// возвращает вектор из кратчайших путей до каждой вершины
+template <typename T>
+vector<T> Graph<T>::Bellman_Ford(const T& beginVertex) {
+	vector<T> v = {};
+
+	// изначально растояния неизвестны (равны бесконечности)
+	for (int i = 0; i < graphsize; i++) {
+		v.push_back(INT_MAX);
+	}
+
+	//расстояние до исходной вершины равно нулю
+	v[beginVertex] = 0;
+
+	// количество рёбер в графе
+	int E = this->NumberOfEdges();
+
+	for (int i = 0; i < graphsize - 1; i++) {
+		for (int j = 0; j < E; j++) {
+			//if ( (v[edge[j][0]] != INT_MAX) && (v[edge[j][0]] + edge[j][2] < v[edge[j][1]]) )
+				//v[edge[j][1]] = v[edge[j][0]] + edge[j][2];
+		}
+	}
+	return v;
+	
 }
