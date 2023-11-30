@@ -6,6 +6,7 @@
 #include <cstring>
 #include <vector>
 #include <stack>
+#include <queue>
 
 #include "LinkedList.h"
 
@@ -417,6 +418,48 @@ vector<T> Graph<T>::DepthFirstSearch(const T& beginVertex) {
 			// поместить все смежные вершины в стек
 			for (T item : adjl) {
 				st.push(item);
+			}
+		}
+	}
+	// возвратить выходной список
+	return l;
+}
+
+// обход в ширину
+template <typename T>
+vector<T> Graph<T>::BreadthFirstSearch(const T& beginVertex) {
+
+	if (GetVertexPos(beginVertex) == -1) {
+		throw invalid_argument("Отсутствует требуемая вершина");
+	}
+
+	// очередь для временного хранения вершин, ожидающих обработки
+	queue<T> qu;
+
+	// L - список пройденных вершин. adjL содержит вершины,
+	// смежные с текущей
+	vector<T> l = {}, adjl = {};
+
+	T vertex1;
+
+	qu.push(beginVertex);
+
+	// продолжать обход, пока не опустеет очередь
+	while(!qu.empty()){
+		// вытолкнуть очередную вершину
+		vertex1 = qu.front();
+		qu.pop();
+		// если вершина ещё не была пройдена (не находится в списке пройденных вершин l)
+		if (find(l.begin(), l.end(), vertex1) == l.end()) {
+			//включить вершину в L
+			l.push_back(vertex1);
+
+			//а также получить все смежные с ней вершины
+			adjl = GetFolowers(vertex1);
+
+			// поместить все смежные вершины в очередь
+			for (T item : adjl) {
+				qu.push(item);
 			}
 		}
 	}

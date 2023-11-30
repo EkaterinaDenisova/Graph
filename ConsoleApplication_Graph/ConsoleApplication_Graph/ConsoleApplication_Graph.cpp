@@ -81,11 +81,18 @@ int main()
         //g.DeleteVertex(2);
         //v1 = g.GetNeighbors(10); 
         //cout << "\n" << v1.at(0);
-        vector<int> v2 = g.DepthFirstSearch(10);
+        vector<int> v2 = g.DepthFirstSearch(2);
 
         for (int item : v2) {
             cout << item << " ";
         }
+
+        cout << "\n\n";
+        v2 = g.BreadthFirstSearch(2);
+        for (int item : v2) {
+            cout << item << " ";
+        }
+
     }
     catch (invalid_argument const& ex) {
         cout << ex.what();
