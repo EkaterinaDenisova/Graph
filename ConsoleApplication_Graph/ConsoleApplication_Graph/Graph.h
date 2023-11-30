@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cstring>
 #include <vector>
+#include <stack>
 
 #include "LinkedList.h"
 
@@ -49,6 +50,8 @@ public:
 
 	// получение списка из соседних вершин
 	vector<T> GetNeighbors(const T& vertex);
+	// получение соседних вершин, к которым есть путь
+	vector<T> GetFolowers(const T& vertex);
 
 	// методы модификации графа
 
@@ -69,10 +72,10 @@ public:
 	//int MinimumPath(const T& sVertex, const T& sVertex);
 
 	// обход в глубину
-	//vector<T> DepthFirstSearch(const T& beginVertex);
+	vector<T> DepthFirstSearch(const T& beginVertex);
 
 	// обход в ширину
-	//vector<T> BreadthFirstSearch(const T& beginVertex);
+	vector<T> BreadthFirstSearch(const T& beginVertex);
 
 	// итератор для обхода вершин
 	//friend class VertexIterator<T>;
@@ -242,6 +245,26 @@ vector<T> Graph<T>::GetNeighbors(const T& vertex) {
 }
 
 template <typename T>
+vector<T> Graph<T>::GetFolowers(const T& vertex) {
+	vector<T> v = {};
+	int pos = GetVertexPos(vertex);
+
+	if (pos <= -1) {
+		throw invalid_argument("Отсутствует требуемая вершина");
+	}
+	else {
+		for (int i = 0; i < graphsize; i++)
+		{
+			if (edge[pos][i] != 0)
+				v.push_back(vertexList.dataByInd(i));
+			//else if (edge[i][pos] != 0)
+				//v.push_back(vertexList.dataByInd(i));
+		}
+		return v;
+	}
+}
+
+template <typename T>
 void Graph<T>::InsertVertex(const T& vertex)
 {
 	// проверить, заполнен ли граф и, если да, увеличить maxGraphSize
@@ -353,4 +376,50 @@ void Graph<T>::DeleteEdge(const T& vertex1, const T& vertex2) {
 	else {
 		edge[ver1][ver2] = 0;
 	}
+}
+
+
+// Обходы графа
+
+// обход в глубину
+template <typename T>
+vector<T> Graph<T>::DepthFirstSearch(const T& beginVertex) {
+
+	if (GetVertexPos(beginVertex) == -1) {
+		throw invalid_argument("Отсутствует требуемая вершина");
+	}
+
+	// стек для временного хранения вершин, ожидающих обработки
+	stack<T> st;
+
+
+	// L - список пройденных вершин. adjL содержит вершины,
+	// смежные с текущей
+	vector<T> l = {}, adjl = {};
+
+	T vertex1;
+
+	st.push(beginVertex);
+
+	// продолжать обход, пока не опустеет стек
+	while (!st.empty()) {
+		// вытолкнуть очередную вершину
+		vertex1 = st.top();
+		st.pop();
+		// если вершина ещё не была пройдена (не находится в списке пройденных вершин l)
+		if (find(l.begin(), l.end(), vertex1) == l.end()) {
+			//включить вершину в L
+			l.push_back(vertex1);
+
+			//а также получить все смежные с ней вершины
+			adjl = GetFolowers(vertex1);
+
+			// поместить все смежные вершины в стек
+			for (T item : adjl) {
+				st.push(item);
+			}
+		}
+	}
+	// возвратить выходной список
+	return l;
 }

@@ -77,10 +77,15 @@ int main()
         cout << "\n" << g.GetWeight(10, 4);
         cout << "\n" << g.GetWeight(2, 4);
 
-        g.DeleteVertex(2);
-        v1 = g.GetNeighbors(10); 
-        cout << "\n" << v1.at(0);
-        
+        cout << "\n\n";
+        //g.DeleteVertex(2);
+        //v1 = g.GetNeighbors(10); 
+        //cout << "\n" << v1.at(0);
+        vector<int> v2 = g.DepthFirstSearch(10);
+
+        for (int item : v2) {
+            cout << item << " ";
+        }
     }
     catch (invalid_argument const& ex) {
         cout << ex.what();
