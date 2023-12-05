@@ -29,8 +29,10 @@ private:
 	int GetVertexPos(const T& vertex1);
 
 public:
-	// конструктор
+	// конструктор с заданием максимального числа вершин maxsize
 	Graph(int maxsize);
+
+	// конструктор копирования и т.д
 
 	// деструктор
 	~Graph();
@@ -56,7 +58,7 @@ public:
 
 	// методы модификации графа
 
-	// dвставка вершины
+	// вставка вершины
 	void InsertVertex(const T& vertex);
 
 	// вставка ребра
@@ -90,6 +92,9 @@ public:
 
 	// получение списка вершин
 	vector<T> GetVertexList();
+
+	// получение матрицы смежности
+	T** GetEdges();
 };
 
 // конструктор, обнуляет матрицу смежности и переменную graphsize
@@ -117,6 +122,7 @@ Graph<T>::Graph(int maxsize)
 	for (int i = 0; i < maxGraphSize; i++)
 		for (int j = 0; j < maxGraphSize; j++)
 			edge[i][j] = 0;
+	// memset или memfill
 
 	// фактическое количество вершин в графе = 0
 	graphsize = 0;
@@ -180,6 +186,12 @@ vector<T> Graph<T>::GetVertexList() {
 }
 
 
+// получение матрицы смежности
+template <typename T>
+T** Graph<T>::GetEdges() {
+	return edge;
+}
+
 // получение индекса вершины в списке
 // если вершины нет, то возвращает -1
 template <typename T>
@@ -230,6 +242,7 @@ int Graph<T>::GetWeight(const T& vertex1, const T& vertex2) {
 
 }
 
+// получение соседей
 template <typename T>
 vector<T> Graph<T>::GetNeighbors(const T& vertex) {
 	vector<T> v = {};
@@ -291,6 +304,7 @@ vector<T> Graph<T>::GetFolowers(const T& vertex) {
 	}
 }
 
+// метод вставки вершины
 template <typename T>
 void Graph<T>::InsertVertex(const T& vertex)
 {
@@ -309,7 +323,7 @@ void Graph<T>::InsertVertex(const T& vertex)
 		for (int i = 0; i < newmaxGraphSize; i++)
 			for (int j = 0; j < newmaxGraphSize; j++)
 				temp[i][j] = 0;
-
+		// memset или memfill
 
 		// копирование значений из старой матрицы смежности в новую 
 		for (int i = 0; i < maxGraphSize; i++)
@@ -318,6 +332,7 @@ void Graph<T>::InsertVertex(const T& vertex)
 			{
 				temp[i][j] = edge[i][j];
 			}
+			// memcpy
 		}
 
 		// освобождение памяти старой матрицы смежности
@@ -345,7 +360,7 @@ void Graph<T>::DeleteVertex(const T& vertex)
 {
 	// получить позицию вершины в списке вершин
 	int pos = GetVertexPos(vertex);
-	int row, col;
+	//int row, col;
 	// если такой вершины нет, сообщить об этом и вернуть управление
 	if (pos == -1)
 	{
@@ -354,10 +369,9 @@ void Graph<T>::DeleteVertex(const T& vertex)
 	
 	// удалить вершину и уменьшить graphsize
 	vertexList.removeNode(vertex);
-	graphsize = vertexList.ListSize();
 
 	// матрица смежности делится на три области
-	for (row = 0; row < pos; row++) { // область I
+	/*for (row = 0; row < pos; row++) { // область I
 		for (col = pos + 1; col < graphsize; col++) {
 			edge[row][col - 1] = edge[row][col];
 		}	
@@ -373,7 +387,26 @@ void Graph<T>::DeleteVertex(const T& vertex)
 		for (col = 0; col < pos; col++) {
 			edge[row - 1][col] = edge[row][col];
 		}
+	}*/
+
+	int i = 0;
+	// редактируем матрицу смежности
+	while (pos < graphsize) {
+		// сдвигаем строки влево
+		for (i = 0; i < graphsize; ++i) {
+			edge[i][pos] = edge[i][pos + 1];
+		}
+
+		// сдвигаем столбцы вправо
+		for (i = 0; i < graphsize; ++i) {
+			edge[pos][i] = edge[pos + 1][i];
+		}
+		pos++;
 	}
+
+	// обновляем поле класса graphsize (кол-во вершин)
+	graphsize = vertexList.ListSize();
+
 }
 	
 // вставка ребра

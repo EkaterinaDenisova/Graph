@@ -93,6 +93,40 @@ int main()
             cout << item << " ";
         }
 
+        cout << "\n\n";
+
+        Graph<int> g1(2);
+        g1.InsertVertex(1); g1.InsertVertex(5); g1.InsertVertex(8);
+        g1.InsertVertex(2); g1.InsertVertex(13);
+        g1.DeleteVertex(2);
+        g1.InsertEdge(1, 5, 20);
+        g1.InsertEdge(5, 8, 45);
+        g1.InsertEdge(5, 1, 12);
+        g1.InsertEdge(8, 13, 99);
+        g1.InsertEdge(13, 1, 49);
+
+        int** matr = g1.GetEdges();
+
+        for (int i = 0; i < g1.NumberOfVertices(); i++) {
+            for (int j = 0; j < g1.NumberOfVertices(); j++) {
+                cout << matr[i][j] << " ";
+            }
+            cout << "\n";
+        }
+
+        cout << "\n";
+        g1.DeleteVertex(5);
+
+        int** matr1 = g1.GetEdges();
+
+        for (int i = 0; i < g1.NumberOfVertices(); i++) {
+            for (int j = 0; j < g1.NumberOfVertices(); j++) {
+                cout << matr1[i][j] << " ";
+            }
+            cout << "\n";
+        }
+
+
     }
     catch (invalid_argument const& ex) {
         cout << ex.what();
