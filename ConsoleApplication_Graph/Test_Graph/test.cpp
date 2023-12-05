@@ -2,7 +2,7 @@
 #include "../ConsoleApplication_Graph/Graph.h"
 
 using namespace std;
-// тестирование вставки вершин
+// С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµ РІСЃС‚Р°РІРєРё РІРµСЂС€РёРЅ
 TEST(TestGraph, TestInsertVertex) {
 
 	Graph<int> g1(2);
@@ -19,14 +19,14 @@ TEST(TestGraph, TestInsertVertex) {
 	EXPECT_EQ(g1.NumberOfVertices(), 3);
 	EXPECT_EQ(g1.GetMaxSize(), 4);
 
-	// проверяем список вершин
+	// РїСЂРѕРІРµСЂСЏРµРј СЃРїРёСЃРѕРє РІРµСЂС€РёРЅ
 	vector<int> v1 = { 1, 5, 8 };
 	vector<int> v2 = g1.GetVertexList();
 	EXPECT_EQ(v1, v2);
 
 }
 
-// тестирование вставки рёбер и получения веса
+// С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµ РІСЃС‚Р°РІРєРё СЂС‘Р±РµСЂ Рё РїРѕР»СѓС‡РµРЅРёСЏ РІРµСЃР°
 TEST(TestGraph, TestInsertEdge) {
 
 	Graph<int> g1(2);
@@ -38,40 +38,40 @@ TEST(TestGraph, TestInsertEdge) {
 	g1.InsertEdge(5, 8, 45);
 	g1.InsertEdge(5, 1, 12);
 
-	// проверяем вес рёбер
+	// РїСЂРѕРІРµСЂСЏРµРј РІРµСЃ СЂС‘Р±РµСЂ
 	EXPECT_EQ(20, g1.GetWeight(1, 5));
 	EXPECT_EQ(12, g1.GetWeight(5, 1));
 	EXPECT_EQ(45, g1.GetWeight(5, 8));
-	EXPECT_EQ(0, g1.GetWeight(1, 8)); // 0 означает,  что ребра нет, но обе вершины существуют
+	EXPECT_EQ(0, g1.GetWeight(1, 8)); // 0 РѕР·РЅР°С‡Р°РµС‚,  С‡С‚Рѕ СЂРµР±СЂР° РЅРµС‚, РЅРѕ РѕР±Рµ РІРµСЂС€РёРЅС‹ СЃСѓС‰РµСЃС‚РІСѓСЋС‚
 
-	// проверка веса ребра несуществующей вершины
+	// РїСЂРѕРІРµСЂРєР° РІРµСЃР° СЂРµР±СЂР° РЅРµСЃСѓС‰РµСЃС‚РІСѓСЋС‰РµР№ РІРµСЂС€РёРЅС‹
 	try {
 		g1.GetWeight(5, 9);
 	}
 	catch (invalid_argument const& ex) {
 		string s = ex.what();
-		EXPECT_EQ(s, "Отсутствует требуемая вершина");
+		EXPECT_EQ(s, "РћС‚СЃСѓС‚СЃС‚РІСѓРµС‚ С‚СЂРµР±СѓРµРјР°СЏ РІРµСЂС€РёРЅР°");
 	}
 }
 
-// тестирование удаления вершины
+// С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµ СѓРґР°Р»РµРЅРёСЏ РІРµСЂС€РёРЅС‹
 TEST(TestGraph, TestDeleteVertex) {
 	Graph<int> g1(2);
 
-	// удаление из пустого графа
+	// СѓРґР°Р»РµРЅРёРµ РёР· РїСѓСЃС‚РѕРіРѕ РіСЂР°С„Р°
 	try {
 		g1.DeleteVertex(13);
 	}
 	catch (invalid_argument const& ex) {
 		string s = ex.what();
-		EXPECT_EQ(s, "Отсутствует требуемая вершина");
+		EXPECT_EQ(s, "РћС‚СЃСѓС‚СЃС‚РІСѓРµС‚ С‚СЂРµР±СѓРµРјР°СЏ РІРµСЂС€РёРЅР°");
 	}
 	//g1.DeleteVertex(13);
 
 	g1.InsertVertex(1); g1.InsertVertex(5); g1.InsertVertex(8);
 	g1.InsertVertex(2); g1.InsertVertex(13);
 
-	// удаление вершины без связей
+	// СѓРґР°Р»РµРЅРёРµ РІРµСЂС€РёРЅС‹ Р±РµР· СЃРІСЏР·РµР№
 	g1.DeleteVertex(2);
 	vector<int> v1 = { 1, 5, 8, 13 };
 	EXPECT_EQ(v1, g1.GetVertexList());
@@ -83,7 +83,7 @@ TEST(TestGraph, TestDeleteVertex) {
 	g1.InsertEdge(8, 13, 99);
 	g1.InsertEdge(13, 1, 49);
 
-	// удаление вершины, у которой были соседи
+	// СѓРґР°Р»РµРЅРёРµ РІРµСЂС€РёРЅС‹, Сѓ РєРѕС‚РѕСЂРѕР№ Р±С‹Р»Рё СЃРѕСЃРµРґРё
 	g1.DeleteVertex(5);
 
 	v1 = { 13 };
@@ -94,17 +94,17 @@ TEST(TestGraph, TestDeleteVertex) {
 
 }
 
-// тестирование удаления ребра
+// С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµ СѓРґР°Р»РµРЅРёСЏ СЂРµР±СЂР°
 TEST(TestGraph, TestDeleteEdge) {
 	Graph<int> g1(2);
 
-	// удаление из пустого графа
+	// СѓРґР°Р»РµРЅРёРµ РёР· РїСѓСЃС‚РѕРіРѕ РіСЂР°С„Р°
 	try {
 		g1.DeleteEdge(13, 1);
 	}
 	catch (invalid_argument const& ex) {
 		string s = ex.what();
-		EXPECT_EQ(s, "Отсутствует требуемая вершина");
+		EXPECT_EQ(s, "РћС‚СЃСѓС‚СЃС‚РІСѓРµС‚ С‚СЂРµР±СѓРµРјР°СЏ РІРµСЂС€РёРЅР°");
 	}
 	//g1.DeleteVertex(13);
 
@@ -119,19 +119,19 @@ TEST(TestGraph, TestDeleteEdge) {
 	g1.InsertEdge(2, 5, 54);
 	g1.InsertEdge(13, 1, 49);
 
-	// удаление несуществующего ребра
+	// СѓРґР°Р»РµРЅРёРµ РЅРµСЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРіРѕ СЂРµР±СЂР°
 	g1.DeleteEdge(5, 13);
 
 	EXPECT_EQ(0, g1.GetWeight(5, 13));
 
-	// удаление ребра
+	// СѓРґР°Р»РµРЅРёРµ СЂРµР±СЂР°
 	EXPECT_EQ(20, g1.GetWeight(1, 5));
 	g1.DeleteEdge(1, 5);
 	EXPECT_EQ(0, g1.GetWeight(1, 5));
 
 }
 
-// проверка соседей
+// РїСЂРѕРІРµСЂРєР° СЃРѕСЃРµРґРµР№
 TEST(TestGraph, TestNeighbors) {
 	Graph<int> g1(2);
 
@@ -147,54 +147,54 @@ TEST(TestGraph, TestNeighbors) {
 	g1.InsertEdge(2, 5, 54);
 	g1.InsertEdge(13, 1, 49);
 
-	// проверка соседей для вершины 1
+	// РїСЂРѕРІРµСЂРєР° СЃРѕСЃРµРґРµР№ РґР»СЏ РІРµСЂС€РёРЅС‹ 1
 	vector<int> v1 = { 5, 13 };
 	vector<int> v2 = { 5 };
 	EXPECT_EQ(v1, g1.GetNeighbors(1));
 	EXPECT_EQ(v2, g1.GetFolowers(1));
 
-	// для вершины 5
+	// РґР»СЏ РІРµСЂС€РёРЅС‹ 5
 	v1 = { 1, 8, 2 }; v2 = { 1, 8 };
 	EXPECT_EQ(v1, g1.GetNeighbors(5));
 	EXPECT_EQ(v2, g1.GetFolowers(5));
 
-	// для вершины 8
+	// РґР»СЏ РІРµСЂС€РёРЅС‹ 8
 	v1 = { 5, 13 }; v2 = { 13 };
 	EXPECT_EQ(v1, g1.GetNeighbors(8));
 	EXPECT_EQ(v2, g1.GetFolowers(8));
 
-	// для вершины 2
+	// РґР»СЏ РІРµСЂС€РёРЅС‹ 2
 	v1 = { 5, 13 }; v2 = { 5, 13 };
 	EXPECT_EQ(v1, g1.GetNeighbors(2));
 	EXPECT_EQ(v2, g1.GetFolowers(2));
 
-	// для вершины 13
+	// РґР»СЏ РІРµСЂС€РёРЅС‹ 13
 	v1 = { 1, 8, 2 }; v2 = { 1 };
 	EXPECT_EQ(v1, g1.GetNeighbors(13));
 	EXPECT_EQ(v2, g1.GetFolowers(13));
 
-	// для несуществующей вершины
+	// РґР»СЏ РЅРµСЃСѓС‰РµСЃС‚РІСѓСЋС‰РµР№ РІРµСЂС€РёРЅС‹
 	try {
 		v1 = g1.GetNeighbors(9);
 	}
 	catch (invalid_argument const& ex) {
 		string s = ex.what();
-		EXPECT_EQ(s, "Отсутствует требуемая вершина");
+		EXPECT_EQ(s, "РћС‚СЃСѓС‚СЃС‚РІСѓРµС‚ С‚СЂРµР±СѓРµРјР°СЏ РІРµСЂС€РёРЅР°");
 	}
 
-	// для несуществующей вершины
+	// РґР»СЏ РЅРµСЃСѓС‰РµСЃС‚РІСѓСЋС‰РµР№ РІРµСЂС€РёРЅС‹
 	try {
 		v1 = g1.GetFolowers(9);
 	}
 	catch (invalid_argument const& ex) {
 		string s = ex.what();
-		EXPECT_EQ(s, "Отсутствует требуемая вершина");
+		EXPECT_EQ(s, "РћС‚СЃСѓС‚СЃС‚РІСѓРµС‚ С‚СЂРµР±СѓРµРјР°СЏ РІРµСЂС€РёРЅР°");
 	}
 
 
 }
 
-// Тестирование обходов в глубину и ширину
+// РўРµСЃС‚РёСЂРѕРІР°РЅРёРµ РѕР±С…РѕРґРѕРІ РІ РіР»СѓР±РёРЅСѓ Рё С€РёСЂРёРЅСѓ
 TEST(TestGraph, TestSearch) {
 	Graph<int> g1(2);
 
@@ -209,7 +209,7 @@ TEST(TestGraph, TestSearch) {
 	g1.InsertEdge(2, 5, 54);
 	g1.InsertEdge(13, 1, 49);
 
-	// для вершины 5
+	// РґР»СЏ РІРµСЂС€РёРЅС‹ 5
 	vector<int> v = { 5, 8, 13, 1 };
 	vector<int> v1 = g1.DepthFirstSearch(5);
 	EXPECT_EQ(v1, v);
@@ -217,7 +217,7 @@ TEST(TestGraph, TestSearch) {
 	v1 = g1.BreadthFirstSearch(5);
 	EXPECT_EQ(v1, v);
 
-	// для вершины 2
+	// РґР»СЏ РІРµСЂС€РёРЅС‹ 2
 	v = { 2, 13, 1, 5, 8 };
 	v1 = g1.DepthFirstSearch(2);
 	EXPECT_EQ(v1, v);
